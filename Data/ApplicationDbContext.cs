@@ -15,6 +15,5 @@ namespace ConferencesManagement.Data
         }
 
         public DbSet<Conference> Conferences { get; set; }
-        public DbSet<Subscriber> Subscribers { get; set; }
     }
 }

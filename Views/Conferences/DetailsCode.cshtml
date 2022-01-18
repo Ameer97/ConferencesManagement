@@ -1,0 +1,101 @@
+﻿@model ConferencesManagement.Models.Conference
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div id="app" style="visibility:hidden">
+    <h4>Join to Conference</h4>
+    <hr />
+    <div v-if="correctCode">
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.StartTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.StartTime)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.EndTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.EndTime)
+            </dd>
+            <dt class="col-sm-2">
+                Status
+            </dt>
+            <dd class="col-sm-10">
+                @if (Model.EndTime >= DateTime.Now && Model.StartTime <= DateTime.Now)
+                {
+                    <text>In Call</text>
+                }
+                else if (Model.EndTime < DateTime.Now)
+                {
+                    <text>Ended</text>
+                }
+                else
+                {
+                    <text>Not started yet</text>
+                }
+            </dd>
+        </dl>
+    </div>
+
+    <div v-if="!correctCode">
+        <dl class="row justify-content-center">
+            <form>
+                <div class="form-group">
+                    <label class="control">meeting code: </label>
+                    <input id="myCode"
+                           class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-primary w-100" type="button" v-on:click="enterCode()">join</button>
+                </div>
+            </form>
+        </dl>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="/lib/vue/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        var vue = new Vue({
+            el: "#app",
+            data: {
+                correctCode:false
+            },
+            methods: {
+                enterCode() {
+                    if ('@ViewBag.Code' == document.getElementById('myCode').value) {
+                        this.correctCode = !this.correctCode;
+                    }
+
+                },
+            },
+            mounted() {
+                window.addEventListener('load', () => {
+                    document.getElementById("app").style.visibility = "visible";
+                })
+            },
+        })
+
+    </script>
+}

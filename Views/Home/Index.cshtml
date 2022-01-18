@@ -1,8 +1,34 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using ConferencesManagement.Data
+@inject SignInManager<IdentityUser> SignInManager
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@if (SignInManager.IsSignedIn(User) && User.IsInRole(SystemRoles.Admin))
+{
+    <style>
+        .img {
+            width: 80%;
+        }
+    </style>
+    <img class="img" src="/pictures/conference-admin.jpg" alt="home" />
+}
+else if (SignInManager.IsSignedIn(User) && User.IsInRole(SystemRoles.User))
+{
+    <style>
+        .img {
+            width: 80%;
+        }
+    </style>
+    <img class="img" src="/pictures/conference-user.jpg" alt="home" />
+}
+else
+{
+    <style>
+        .img {
+            width: 90%;
+        }
+    </style>
+    <img class="img" src="/pictures/conference.jpg" alt="HomePicture" />
+}
